@@ -28,7 +28,15 @@ const Story = () => {
   }, [id]);
 
   const handleBack = () => {
-    navigate("/");
+    // Use location hash to navigate directly to the stories section
+    navigate('/#stories');
+    // Force scroll to the stories section after a short delay to ensure the page has loaded
+    setTimeout(() => {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      });
+    }, 100);
   };
 
   if (!story) {
