@@ -1,7 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Clock, Headphones, ChevronUp } from "lucide-react";
+import { Clock, ChevronUp } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export interface StoredStory {
@@ -34,7 +33,7 @@ const StoryList = ({ stories, onSelect }: StoryListProps) => {
             <CardTitle className="text-2xl font-semibold">Your Episodes</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {stories.length === 0 ? (
                 <p className="text-gray-500 text-center py-4">
                   No episodes created yet. Create your first episode!
@@ -44,27 +43,17 @@ const StoryList = ({ stories, onSelect }: StoryListProps) => {
                   <div
                     key={story.id}
                     onClick={() => onSelect(story)}
-                    className="flex items-center justify-between p-4 rounded-lg bg-white/50 hover:bg-white/70 transition-all duration-200 border border-[#E5DEFF]/20 cursor-pointer transform hover:-translate-y-1 hover:shadow-lg group"
+                    className="p-3 rounded-lg bg-white/50 hover:bg-white/70 transition-all duration-200 border border-[#E5DEFF]/20 cursor-pointer transform hover:-translate-y-0.5 hover:shadow-md group"
                   >
-                    <div className="flex-1">
-                      <h3 className="font-medium text-[#403E43] group-hover:text-[#2D2B31]">
-                        {story.title}
-                      </h3>
-                      <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-                        <Clock className="w-4 h-4" />
-                        <span>
-                          {formatDistanceToNow(story.createdAt, { addSuffix: true })}
-                        </span>
-                      </div>
+                    <h3 className="font-medium text-[#403E43] group-hover:text-[#2D2B31] text-sm">
+                      {story.title}
+                    </h3>
+                    <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>
+                        {formatDistanceToNow(story.createdAt, { addSuffix: true })}
+                      </span>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="bg-[#D3E4FD]/50 hover:bg-[#D3E4FD] border-[#D3E4FD]/20 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <Headphones className="w-4 h-4 mr-2" />
-                      Listen
-                    </Button>
                   </div>
                 ))
               )}
