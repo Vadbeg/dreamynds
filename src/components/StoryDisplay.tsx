@@ -15,13 +15,32 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioUrl = "https://download.samplelib.com/mp3/sample-3s.mp3";
-    console.log(audioUrl);
+    const loadAudio = async () => {
+      try {
+        // Fetch audio bytes from backend with CORS mode
+        audioUrl = "http://0.0.0.0:8000/stories/1/audio";
+        const response = await fetch(audioUrl || "", {
+          headers: {
+            "Accept": "audio/mpeg" // Specify expected audio type
+          }
+        });
+        const audioBlob = await response.blob();
+        
+        // Create object URL from blob
+        const audioObjectUrl = URL.createObjectURL(audioBlob);
+        
+        // Create and setup audio element
+        audioRef.current = new Audio(audioObjectUrl);
+        audioRef.current.addEventListener("ended", () => setIsPlaying(false));
+      } catch (error) {
+        console.error("Error loading audio:", error);
+      }
+    };
 
     if (audioUrl) {
-      audioRef.current = new Audio(audioUrl);
-      audioRef.current.addEventListener("ended", () => setIsPlaying(false));
+      loadAudio();
     }
+
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
