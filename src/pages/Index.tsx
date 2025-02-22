@@ -11,7 +11,6 @@ const Index = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Load stories from localStorage on mount
   useEffect(() => {
     const savedStories = localStorage.getItem("stories");
     if (savedStories) {
@@ -26,16 +25,15 @@ const Index = () => {
   const generateStory = async (settings: StorySettings) => {
     setIsGenerating(true);
     try {
-      // This would be replaced with actual API calls to OpenAI and ElevenLabs
-      const mockStory = `Once upon a time in a ${settings.setting}, there was a ${settings.character} who loved to explore...`;
+      // This would be replaced with actual API calls
+      const mockStory = `A fascinating exploration of ${settings.theme} in ${settings.setting}, examining how ${settings.character} impacts our understanding...`;
 
-      // Mock audio URL - this would be replaced with ElevenLabs API response
+      // Mock audio URL - this would be replaced with actual API response
       const mockAudioUrl = "https://example.com/audio.mp3";
 
-      // Create and save the new story
       const newStory: StoredStory = {
         id: Date.now().toString(),
-        title: `${settings.character}'s Adventure in the ${settings.setting}`,
+        title: `${settings.theme}: A Deep Dive into ${settings.setting}`,
         content: mockStory,
         audioUrl: mockAudioUrl,
         settings,
@@ -48,15 +46,14 @@ const Index = () => {
 
       toast({
         title: "Success",
-        description: "Your story has been created and saved!",
+        description: "Your podcast has been created!",
       });
 
-      // Navigate to the new story
       navigate(`/story/${newStory.id}`);
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to generate story. Please try again.",
+        description: "Failed to generate podcast. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -69,14 +66,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-soft-blue via-soft-pink to-soft-purple p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#F1F0FB] via-[#D3E4FD] to-[#E5DEFF] p-6">
       <div className="max-w-7xl mx-auto">
         <header className="text-center mb-12 animate-fade-in">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Magical Story Creator
+          <h1 className="text-4xl font-bold text-[#403E43] mb-4">
+            Deep Research Podcast Creator
           </h1>
           <p className="text-lg text-gray-600">
-            Create enchanting stories for your little ones
+            Create in-depth, well-researched podcast episodes on any topic
           </p>
         </header>
 

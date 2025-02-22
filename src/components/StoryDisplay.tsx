@@ -61,7 +61,7 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto bg-white/50 backdrop-blur-sm border-soft-pink/20 animate-fade-in">
+    <Card className="w-full max-w-2xl mx-auto bg-white/50 backdrop-blur-sm border-[#D3E4FD]/20">
       <CardHeader className="flex flex-row justify-between items-center">
         <div className="flex space-x-4">
           {audioUrl && (
@@ -69,7 +69,7 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
               variant="outline"
               size="icon"
               onClick={toggleAudio}
-              className="bg-soft-yellow/50 hover:bg-soft-yellow border-soft-yellow/20"
+              className="bg-[#F1F0FB]/50 hover:bg-[#F1F0FB] border-[#F1F0FB]/20"
             >
               {isPlaying ? (
                 <Pause className="h-4 w-4" />
@@ -82,7 +82,7 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
             variant="outline"
             size="icon"
             onClick={onReset}
-            className="bg-soft-green/50 hover:bg-soft-green border-soft-green/20"
+            className="bg-[#E5DEFF]/50 hover:bg-[#E5DEFF] border-[#E5DEFF]/20"
           >
             <RotateCcw className="h-4 w-4" />
           </Button>
@@ -91,7 +91,7 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
       <CardContent>
         <div className="prose prose-lg max-w-none">
           {story.split("\n").map((paragraph, index) => (
-            <p key={index} className="mb-4 text-gray-700 leading-relaxed">
+            <p key={index} className="mb-4 text-[#403E43] leading-relaxed">
               {paragraph}
             </p>
           ))}

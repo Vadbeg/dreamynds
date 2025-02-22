@@ -40,7 +40,7 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
     <Card className="w-full max-w-md mx-auto bg-white/50 backdrop-blur-sm border-soft-blue/20">
       <CardHeader>
         <CardTitle className="text-2xl text-center font-semibold">
-          Create Your Story
+          Create Your Episode
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -54,34 +54,34 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
               <SelectValue placeholder="Choose a theme" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="fantasy">Fantasy</SelectItem>
-              <SelectItem value="animals">Animals</SelectItem>
-              <SelectItem value="adventure">Adventure</SelectItem>
-              <SelectItem value="space">Space</SelectItem>
+              <SelectItem value="science">Science & Technology</SelectItem>
+              <SelectItem value="history">Historical Events</SelectItem>
+              <SelectItem value="philosophy">Philosophy</SelectItem>
+              <SelectItem value="culture">Cultural Analysis</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="setting">Setting</Label>
+          <Label htmlFor="setting">Focus Area</Label>
           <Select
             value={settings.setting}
             onValueChange={(value) => setSettings({ ...settings, setting: value })}
           >
             <SelectTrigger id="setting">
-              <SelectValue placeholder="Choose a setting" />
+              <SelectValue placeholder="Choose a focus area" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="forest">Enchanted Forest</SelectItem>
-              <SelectItem value="castle">Magical Castle</SelectItem>
-              <SelectItem value="ocean">Deep Ocean</SelectItem>
-              <SelectItem value="mountains">Mountains</SelectItem>
+              <SelectItem value="modern">Modern Implications</SelectItem>
+              <SelectItem value="future">Future Prospects</SelectItem>
+              <SelectItem value="analysis">Critical Analysis</SelectItem>
+              <SelectItem value="impact">Societal Impact</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="character">Main Character</Label>
+          <Label htmlFor="character">Perspective</Label>
           <Select
             value={settings.character}
             onValueChange={(value) =>
@@ -89,19 +89,19 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
             }
           >
             <SelectTrigger id="character">
-              <SelectValue placeholder="Choose a character" />
+              <SelectValue placeholder="Choose a perspective" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="child">Child</SelectItem>
-              <SelectItem value="animal">Friendly Animal</SelectItem>
-              <SelectItem value="magical">Magical Creature</SelectItem>
-              <SelectItem value="robot">Robot</SelectItem>
+              <SelectItem value="academic">Academic</SelectItem>
+              <SelectItem value="practical">Practical</SelectItem>
+              <SelectItem value="innovative">Innovative</SelectItem>
+              <SelectItem value="critical">Critical</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="length">Story Length</Label>
+          <Label htmlFor="length">Episode Length</Label>
           <Select
             value={settings.length}
             onValueChange={(value) => setSettings({ ...settings, length: value })}
@@ -110,24 +110,24 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
               <SelectValue placeholder="Choose length" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="short">Short (2-3 min)</SelectItem>
-              <SelectItem value="medium">Medium (4-5 min)</SelectItem>
-              <SelectItem value="long">Long (6-8 min)</SelectItem>
+              <SelectItem value="short">Short (15 min)</SelectItem>
+              <SelectItem value="medium">Medium (30 min)</SelectItem>
+              <SelectItem value="long">Long (45 min)</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <Button
-          className="w-full bg-soft-purple hover:bg-soft-purple/90 text-purple-900"
+          className="w-full bg-[#E5DEFF] hover:bg-[#D3E4FD] text-[#403E43]"
           onClick={handleGenerate}
           disabled={isGenerating || !Object.values(settings).every(Boolean)}
         >
           {isGenerating ? (
-            "Creating your story..."
+            "Creating your episode..."
           ) : (
             <>
               <Wand2 className="mr-2 h-4 w-4" />
-              Generate Story
+              Generate Episode
             </>
           )}
         </Button>
