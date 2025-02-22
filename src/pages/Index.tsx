@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import StoryForm, { StorySettings } from "@/components/StoryForm";
@@ -39,7 +38,6 @@ const Index = () => {
 
   const generateStory = async (settings: StorySettings) => {
     setIsGenerating(true);
-    // Create a temporary story with loading state
     const tempId = Date.now().toString();
     const loadingStory: StoredStory = {
       id: tempId,
@@ -50,36 +48,28 @@ const Index = () => {
       createdAt: new Date(),
     };
 
-    // Add the loading story to the list and store it
     setGeneratingStoryId(tempId);
     const updatedStories = [loadingStory, ...stories];
     setStories(updatedStories);
     localStorage.setItem("stories", JSON.stringify(updatedStories));
     
-    // Scroll to stories section
     scrollToStories();
 
     try {
-      // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // This would be replaced with actual API calls
       const mockStory = `A deep dive into ${settings.context}, narrated with our ${settings.voice} voice...`;
       const mockAudioUrl = "https://example.com/audio.mp3";
 
       const finalStory: StoredStory = {
         id: tempId,
-        title: `Research: ${settings.context.slice(0, 50)}...`,
+        title: settings.context,
         content: mockStory,
         audioUrl: mockAudioUrl,
         settings: settings,
-        createdAt: loadingStory.createdAt, // Keep the original creation time
+        createdAt: loadingStory.createdAt,
       };
 
-      // Update the story with final content
-      const finalStories = stories.map(story => 
-        story.id === tempId ? finalStory : story
-      );
       const newStories = [finalStory, ...stories.filter(story => story.id !== tempId)];
       
       setStories(newStories);
@@ -102,7 +92,6 @@ const Index = () => {
   };
 
   const handleSelectStory = (selectedStory: StoredStory) => {
-    // Don't navigate if the story is still generating
     if (selectedStory.id === generatingStoryId) return;
     navigate(`/story/${selectedStory.id}`);
   };
