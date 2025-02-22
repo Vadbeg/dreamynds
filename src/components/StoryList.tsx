@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock, ChevronUp } from "lucide-react";
+import { Clock, ChevronUp, Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export interface StoredStory {
@@ -19,9 +19,10 @@ export interface StoredStory {
 interface StoryListProps {
   stories: StoredStory[];
   onSelect: (story: StoredStory) => void;
+  generatingStoryId?: string | null;
 }
 
-const StoryList = ({ stories, onSelect }: StoryListProps) => {
+const StoryList = ({ stories, onSelect, generatingStoryId }: StoryListProps) => {
   return (
     <div className="min-h-screen snap-start bg-gradient-to-br from-[#F1F0FB] via-[#D3E4FD] to-[#E5DEFF] p-6">
       <div className="max-w-7xl mx-auto">
@@ -46,11 +47,20 @@ const StoryList = ({ stories, onSelect }: StoryListProps) => {
                     <div
                       key={story.id}
                       onClick={() => onSelect(story)}
-                      className="p-3 rounded-lg bg-white hover:bg-white transition-all duration-200 border border-[#E5DEFF]/20 cursor-pointer transform hover:-translate-y-0.5 hover:shadow-md group"
+                      className={`p-3 rounded-lg bg-white transition-all duration-200 border border-[#E5DEFF]/20 
+                        ${story.id === generatingStoryId 
+                          ? 'cursor-default opacity-80' 
+                          : 'cursor-pointer hover:bg-white transform hover:-translate-y-0.5 hover:shadow-md'
+                        } group`}
                     >
-                      <h3 className="font-medium text-[#403E43] group-hover:text-[#2D2B31] text-sm">
-                        {story.title}
-                      </h3>
+                      <div className="flex justify-between items-start">
+                        <h3 className="font-medium text-[#403E43] group-hover:text-[#2D2B31] text-sm">
+                          {story.title}
+                        </h3>
+                        {story.id === generatingStoryId && (
+                          <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
+                        )}
+                      </div>
                       <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1">
                         <Clock className="w-3.5 h-3.5" />
                         <span>

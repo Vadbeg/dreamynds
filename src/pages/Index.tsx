@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import StoryForm, { StorySettings } from "@/components/StoryForm";
 import StoryList, { StoredStory } from "@/components/StoryList";
@@ -9,8 +9,10 @@ import { ChevronDown } from "lucide-react";
 const Index = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [stories, setStories] = useState<StoredStory[]>([]);
+  const [generatingStoryId, setGeneratingStoryId] = useState<string | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const storiesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const savedStories = localStorage.getItem("stories");
@@ -23,17 +25,49 @@ const Index = () => {
     }
   }, []);
 
+  const scrollToStories = () => {
+    requestAnimationFrame(() => {
+      const storiesSection = document.querySelector('.snap-mandatory');
+      if (storiesSection) {
+        storiesSection.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+    });
+  };
+
   const generateStory = async (settings: StorySettings) => {
     setIsGenerating(true);
+    // Create a temporary story with loading state
+    const tempId = Date.now().toString();
+    const loadingStory: StoredStory = {
+      id: tempId,
+      title: `Generating podcast about ${settings.context.slice(0, 30)}...`,
+      content: "Generating your podcast...",
+      audioUrl: null,
+      settings: settings,
+      createdAt: new Date(),
+    };
+
+    // Add the loading story to the list
+    setGeneratingStoryId(tempId);
+    const updatedStories = [loadingStory, ...stories];
+    setStories(updatedStories);
+    
+    // Scroll to stories section
+    scrollToStories();
+
     try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       // This would be replaced with actual API calls
       const mockStory = `A deep dive into ${settings.context}, narrated with our ${settings.voice} voice...`;
-
-      // Mock audio URL - this would be replaced with actual API response
       const mockAudioUrl = "https://example.com/audio.mp3";
 
-      const newStory: StoredStory = {
-        id: Date.now().toString(),
+      const finalStory: StoredStory = {
+        id: tempId,
         title: `Research: ${settings.context.slice(0, 50)}...`,
         content: mockStory,
         audioUrl: mockAudioUrl,
@@ -41,17 +75,22 @@ const Index = () => {
         createdAt: new Date(),
       };
 
-      const updatedStories = [newStory, ...stories];
-      setStories(updatedStories);
-      localStorage.setItem("stories", JSON.stringify(updatedStories));
+      // Update the story with final content
+      const finalStories = stories.map(story => 
+        story.id === tempId ? finalStory : story
+      );
+      
+      setStories(finalStories);
+      localStorage.setItem("stories", JSON.stringify(finalStories));
 
       toast({
         title: "Success",
         description: "Your podcast has been created!",
       });
-
-      navigate(`/story/${newStory.id}`);
     } catch (error) {
+      // Remove the loading story if there's an error
+      setStories(stories.filter(story => story.id !== tempId));
+      
       toast({
         title: "Error",
         description: "Failed to generate podcast. Please try again.",
@@ -59,10 +98,13 @@ const Index = () => {
       });
     } finally {
       setIsGenerating(false);
+      setGeneratingStoryId(null);
     }
   };
 
   const handleSelectStory = (selectedStory: StoredStory) => {
+    // Don't navigate if the story is still generating
+    if (selectedStory.id === generatingStoryId) return;
     navigate(`/story/${selectedStory.id}`);
   };
 
@@ -86,14 +128,19 @@ const Index = () => {
           </main>
         </div>
         
-        {/* Scroll Hint */}
         <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-2 animate-bounce">
           <p className="text-gray-500 text-sm">Scroll to see your episodes</p>
           <ChevronDown className="w-6 h-6 text-gray-400" />
         </div>
       </div>
 
-      <StoryList stories={stories} onSelect={handleSelectStory} />
+      <div ref={storiesRef}>
+        <StoryList 
+          stories={stories} 
+          onSelect={handleSelectStory} 
+          generatingStoryId={generatingStoryId} 
+        />
+      </div>
     </div>
   );
 };
