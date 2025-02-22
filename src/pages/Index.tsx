@@ -66,7 +66,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F1F0FB] via-[#D3E4FD] to-[#E5DEFF] p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#F1F0FB] via-[#D3E4FD] to-[#E5DEFF] p-6 pb-[80vh]">
       <div className="max-w-7xl mx-auto">
         <header className="text-center mb-12 animate-fade-in">
           <h1 className="text-4xl font-bold text-[#403E43] mb-4">
@@ -77,15 +77,14 @@ const Index = () => {
           </p>
         </header>
 
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-8">
+        <main className="flex justify-center">
+          <div className="w-full max-w-md">
             <StoryForm onGenerate={generateStory} isGenerating={isGenerating} />
-          </div>
-          <div>
-            <StoryList stories={stories} onSelect={handleSelectStory} />
           </div>
         </main>
       </div>
+
+      <StoryList stories={stories} onSelect={handleSelectStory} />
     </div>
   );
 };
