@@ -10,7 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Wand2 } from "lucide-react";
+import { Wand2, Voicemail } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface StoryFormProps {
   onGenerate: (settings: StorySettings) => void;
@@ -18,17 +19,15 @@ interface StoryFormProps {
 }
 
 export interface StorySettings {
-  theme: string;
-  setting: string;
-  character: string;
+  context: string;
+  voice: string;
   length: string;
 }
 
 const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
   const [settings, setSettings] = useState<StorySettings>({
-    theme: "",
-    setting: "",
-    character: "",
+    context: "",
+    voice: "",
     length: "",
   });
 
@@ -45,57 +44,35 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="theme">Theme</Label>
-          <Select
-            value={settings.theme}
-            onValueChange={(value) => setSettings({ ...settings, theme: value })}
-          >
-            <SelectTrigger id="theme">
-              <SelectValue placeholder="Choose a theme" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="science">Science & Technology</SelectItem>
-              <SelectItem value="history">Historical Events</SelectItem>
-              <SelectItem value="philosophy">Philosophy</SelectItem>
-              <SelectItem value="culture">Cultural Analysis</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="setting">Focus Area</Label>
-          <Select
-            value={settings.setting}
-            onValueChange={(value) => setSettings({ ...settings, setting: value })}
-          >
-            <SelectTrigger id="setting">
-              <SelectValue placeholder="Choose a focus area" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="modern">Modern Implications</SelectItem>
-              <SelectItem value="future">Future Prospects</SelectItem>
-              <SelectItem value="analysis">Critical Analysis</SelectItem>
-              <SelectItem value="impact">Societal Impact</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="character">Perspective</Label>
-          <Select
-            value={settings.character}
-            onValueChange={(value) =>
-              setSettings({ ...settings, character: value })
+          <Label htmlFor="context">Research Context</Label>
+          <Input
+            id="context"
+            placeholder="What would you like to research? Be as specific as you'd like..."
+            value={settings.context}
+            onChange={(e) =>
+              setSettings({ ...settings, context: e.target.value })
             }
+            className="min-h-[100px] resize-none"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="voice" className="flex items-center gap-2">
+            <Voicemail className="w-4 h-4" />
+            Voice
+          </Label>
+          <Select
+            value={settings.voice}
+            onValueChange={(value) => setSettings({ ...settings, voice: value })}
           >
-            <SelectTrigger id="character">
-              <SelectValue placeholder="Choose a perspective" />
+            <SelectTrigger id="voice">
+              <SelectValue placeholder="Choose a voice" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="academic">Academic</SelectItem>
-              <SelectItem value="practical">Practical</SelectItem>
-              <SelectItem value="innovative">Innovative</SelectItem>
-              <SelectItem value="critical">Critical</SelectItem>
+              <SelectItem value="sarah">Sarah - Professional</SelectItem>
+              <SelectItem value="daniel">Daniel - Academic</SelectItem>
+              <SelectItem value="emily">Emily - Conversational</SelectItem>
+              <SelectItem value="james">James - Authoritative</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -26,14 +26,14 @@ const Index = () => {
     setIsGenerating(true);
     try {
       // This would be replaced with actual API calls
-      const mockStory = `A fascinating exploration of ${settings.theme} in ${settings.setting}, examining how ${settings.character} impacts our understanding...`;
+      const mockStory = `A deep dive into ${settings.context}, narrated with our ${settings.voice} voice...`;
 
       // Mock audio URL - this would be replaced with actual API response
       const mockAudioUrl = "https://example.com/audio.mp3";
 
       const newStory: StoredStory = {
         id: Date.now().toString(),
-        title: `${settings.theme}: A Deep Dive into ${settings.setting}`,
+        title: `Research: ${settings.context.slice(0, 50)}...`,
         content: mockStory,
         audioUrl: mockAudioUrl,
         settings,
