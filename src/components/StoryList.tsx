@@ -29,7 +29,7 @@ const StoryList = ({ stories, onSelect }: StoryListProps) => {
           <ChevronUp className="w-8 h-8 text-gray-400 animate-bounce" />
         </div>
         <div className="flex justify-center">
-          <Card className="w-full max-w-md bg-white/50 backdrop-blur-sm border-soft-blue/20">
+          <Card className="w-full max-w-[600px] bg-white/50 backdrop-blur-sm border-soft-blue/20">
             <CardHeader>
               <CardTitle className="text-2xl text-center font-semibold">
                 Your Episodes
