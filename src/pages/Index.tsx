@@ -36,7 +36,7 @@ const Index = () => {
         title: `Research: ${settings.context.slice(0, 50)}...`,
         content: mockStory,
         audioUrl: mockAudioUrl,
-        settings,
+        settings: settings,
         createdAt: new Date(),
       };
 

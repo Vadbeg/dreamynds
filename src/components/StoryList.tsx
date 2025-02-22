@@ -10,9 +10,8 @@ export interface StoredStory {
   content: string;
   audioUrl: string | null;
   settings: {
-    theme: string;
-    setting: string;
-    character: string;
+    context: string;
+    voice: string;
     length: string;
   };
   createdAt: Date;
