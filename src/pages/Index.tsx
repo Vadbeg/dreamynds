@@ -50,10 +50,11 @@ const Index = () => {
       createdAt: new Date(),
     };
 
-    // Add the loading story to the list
+    // Add the loading story to the list and store it
     setGeneratingStoryId(tempId);
     const updatedStories = [loadingStory, ...stories];
     setStories(updatedStories);
+    localStorage.setItem("stories", JSON.stringify(updatedStories));
     
     // Scroll to stories section
     scrollToStories();
@@ -72,25 +73,23 @@ const Index = () => {
         content: mockStory,
         audioUrl: mockAudioUrl,
         settings: settings,
-        createdAt: new Date(),
+        createdAt: loadingStory.createdAt, // Keep the original creation time
       };
 
       // Update the story with final content
       const finalStories = stories.map(story => 
         story.id === tempId ? finalStory : story
       );
+      const newStories = [finalStory, ...stories.filter(story => story.id !== tempId)];
       
-      setStories(finalStories);
-      localStorage.setItem("stories", JSON.stringify(finalStories));
+      setStories(newStories);
+      localStorage.setItem("stories", JSON.stringify(newStories));
 
       toast({
         title: "Success",
         description: "Your podcast has been created!",
       });
     } catch (error) {
-      // Remove the loading story if there's an error
-      setStories(stories.filter(story => story.id !== tempId));
-      
       toast({
         title: "Error",
         description: "Failed to generate podcast. Please try again.",
