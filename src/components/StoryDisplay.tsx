@@ -15,6 +15,9 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    audioUrl = "https://download.samplelib.com/mp3/sample-3s.mp3";
+    console.log(audioUrl);
+
     if (audioUrl) {
       audioRef.current = new Audio(audioUrl);
       audioRef.current.addEventListener("ended", () => setIsPlaying(false));
