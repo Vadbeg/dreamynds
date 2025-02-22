@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Headphones } from "lucide-react";
+import { Clock, Headphones, ChevronUp } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export interface StoredStory {
@@ -24,46 +24,55 @@ interface StoryListProps {
 
 const StoryList = ({ stories, onSelect }: StoryListProps) => {
   return (
-    <Card className="w-full bg-white/50 backdrop-blur-sm border-soft-blue/20">
-      <CardHeader>
-        <CardTitle className="text-2xl font-semibold">Your Episodes</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {stories.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">
-              No episodes created yet. Create your first episode!
-            </p>
-          ) : (
-            stories.map((story) => (
-              <div
-                key={story.id}
-                className="flex items-center justify-between p-4 rounded-lg bg-white/50 hover:bg-white/70 transition-colors border border-[#E5DEFF]/20"
-              >
-                <div className="flex-1">
-                  <h3 className="font-medium text-[#403E43]">{story.title}</h3>
-                  <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-                    <Clock className="w-4 h-4" />
-                    <span>
-                      {formatDistanceToNow(story.createdAt, { addSuffix: true })}
-                    </span>
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-[#D3E4FD]/50 hover:bg-[#D3E4FD] border-[#D3E4FD]/20"
-                  onClick={() => onSelect(story)}
-                >
-                  <Headphones className="w-4 h-4 mr-2" />
-                  Listen
-                </Button>
-              </div>
-            ))
-          )}
+    <div className="min-h-screen snap-start bg-gradient-to-br from-[#F1F0FB]/50 via-[#D3E4FD]/50 to-[#E5DEFF]/50">
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="flex justify-center mb-8">
+          <ChevronUp className="w-8 h-8 text-gray-400 animate-bounce" />
         </div>
-      </CardContent>
-    </Card>
+        <Card className="w-full bg-white/50 backdrop-blur-sm border-soft-blue/20">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold">Your Episodes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {stories.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">
+                  No episodes created yet. Create your first episode!
+                </p>
+              ) : (
+                stories.map((story) => (
+                  <div
+                    key={story.id}
+                    onClick={() => onSelect(story)}
+                    className="flex items-center justify-between p-4 rounded-lg bg-white/50 hover:bg-white/70 transition-all duration-200 border border-[#E5DEFF]/20 cursor-pointer transform hover:-translate-y-1 hover:shadow-lg group"
+                  >
+                    <div className="flex-1">
+                      <h3 className="font-medium text-[#403E43] group-hover:text-[#2D2B31]">
+                        {story.title}
+                      </h3>
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                        <Clock className="w-4 h-4" />
+                        <span>
+                          {formatDistanceToNow(story.createdAt, { addSuffix: true })}
+                        </span>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-[#D3E4FD]/50 hover:bg-[#D3E4FD] border-[#D3E4FD]/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Headphones className="w-4 h-4 mr-2" />
+                      Listen
+                    </Button>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 };
 
