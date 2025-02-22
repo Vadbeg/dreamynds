@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Wand2, Voicemail } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface StoryFormProps {
   onGenerate: (settings: StorySettings) => void;
@@ -45,14 +45,14 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
       <CardContent className="space-y-6">
         <div className="space-y-2">
           <Label htmlFor="context">Research Context</Label>
-          <Input
+          <Textarea
             id="context"
             placeholder="What would you like to research? Be as specific as you'd like..."
             value={settings.context}
             onChange={(e) =>
               setSettings({ ...settings, context: e.target.value })
             }
-            className="min-h-[100px] resize-none"
+            className="min-h-[120px] resize-y bg-white"
           />
         </div>
 
@@ -65,10 +65,10 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
             value={settings.voice}
             onValueChange={(value) => setSettings({ ...settings, voice: value })}
           >
-            <SelectTrigger id="voice">
+            <SelectTrigger id="voice" className="bg-white">
               <SelectValue placeholder="Choose a voice" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               <SelectItem value="sarah">Sarah - Professional</SelectItem>
               <SelectItem value="daniel">Daniel - Academic</SelectItem>
               <SelectItem value="emily">Emily - Conversational</SelectItem>
@@ -83,10 +83,10 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
             value={settings.length}
             onValueChange={(value) => setSettings({ ...settings, length: value })}
           >
-            <SelectTrigger id="length">
+            <SelectTrigger id="length" className="bg-white">
               <SelectValue placeholder="Choose length" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               <SelectItem value="short">Short (15 min)</SelectItem>
               <SelectItem value="medium">Medium (30 min)</SelectItem>
               <SelectItem value="long">Long (45 min)</SelectItem>
