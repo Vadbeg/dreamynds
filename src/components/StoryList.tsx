@@ -37,7 +37,7 @@ const StoryList = ({ stories, onSelect, generatingStoryId }: StoryListProps) => 
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-center mb-12 pt-8 left-0 right-0 flex flex-col items-center gap-2 animate-bounce">
           <ChevronUp className="w-6 h-6 text-gray-400" />
-          <p className="text-gray-500 text-sm">Scroll to see your episodes</p>
+          <p className="text-gray-500 text-sm">Go back</p>
         </div>
         <div className="flex justify-center">
           <Card className="w-full max-w-[600px] bg-white/50 backdrop-blur-sm border-soft-blue/20">

@@ -68,10 +68,10 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
               <SelectValue placeholder="Choose a voice" />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              <SelectItem value="sarah">Sarah - Professional</SelectItem>
-              <SelectItem value="daniel">Daniel - Academic</SelectItem>
-              <SelectItem value="emily">Emily - Conversational</SelectItem>
-              <SelectItem value="james">James - Authoritative</SelectItem>
+              <SelectItem value="rachel">Rachel - Professional</SelectItem>
+              <SelectItem value="brian">Brian - Academic</SelectItem>
+              <SelectItem value="charlotte">Charlotte - Conversational</SelectItem>
+              <SelectItem value="joseph">Joseph - Engaging</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -86,9 +86,9 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
               <SelectValue placeholder="Choose length" />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              <SelectItem value="short">Short (15 min)</SelectItem>
-              <SelectItem value="medium">Medium (30 min)</SelectItem>
-              <SelectItem value="long">Long (45 min)</SelectItem>
+              <SelectItem value="short">Short (1 to 3 min)</SelectItem>
+              <SelectItem value="medium">Medium (10 to 15 min)</SelectItem>
+              <SelectItem value="long">Long (25+ min)</SelectItem>
             </SelectContent>
           </Select>
         </div>

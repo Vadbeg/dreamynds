@@ -76,13 +76,27 @@ const Index = () => {
     scrollToStories();
 
     try {
+      const getLengthInMinutes = (length: string): number => {
+        switch (length) {
+          case "short":
+            return 2;
+          case "medium":
+            return 5;
+          case "long":
+            return 10;
+          default:
+            return 2;
+        }
+      };
       const response = await fetch("http://0.0.0.0:8000/generate-story", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          context: settings.context
+          context: settings.context,
+          voice: settings.voice,
+          length: getLengthInMinutes(settings.length)
         }),
       });
 
@@ -133,7 +147,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <header className="text-center mb-12 animate-fade-in">
             <h1 className="text-4xl font-bold text-[#403E43] mb-4">
-              Deep Research Podcast
+              Podcastly
             </h1>
             <p className="text-lg text-gray-600">
               Create in-depth, well-researched podcast episodes on any topic
