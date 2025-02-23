@@ -52,13 +52,12 @@ const StoryForm = ({ onGenerate, isGenerating }: StoryFormProps) => {
             onChange={(e) =>
               setSettings({ ...settings, context: e.target.value })
             }
-            className="min-h-[120px] resize-y bg-white"
+            className="min-h-[120px] resize-none bg-white"
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="voice" className="flex items-center gap-2">
-            <Voicemail className="w-4 h-4" />
             Voice
           </Label>
           <Select

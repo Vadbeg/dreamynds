@@ -14,15 +14,37 @@ const Index = () => {
   const storiesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const savedStories = localStorage.getItem("stories");
-    if (savedStories) {
-      const parsedStories = JSON.parse(savedStories).map((story: StoredStory) => ({
-        ...story,
-        createdAt: new Date(story.createdAt),
-      }));
-      setStories(parsedStories);
-    }
-  }, []);
+    const fetchStories = async () => {
+      try {
+        const response = await fetch("http://0.0.0.0:8000/stories");
+        if (!response.ok) {
+          throw new Error("Failed to fetch stories");
+        }
+        const backendStories = await response.json();
+        
+        const transformedStories: StoredStory[] = backendStories.map((story: any) => ({
+          id: story.id.toString(),
+          title: story.name,
+          content: story.text,
+          createdAt: new Date(story.created_at),
+          audioDuration: story.duration_seconds
+        }));
+
+        setStories(transformedStories);
+        localStorage.setItem("stories", JSON.stringify(transformedStories));
+        console.log(transformedStories);
+      } catch (error) {
+        console.error("Error fetching stories:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load stories. Please try again later.",
+          variant: "destructive"
+        });
+      }
+    };
+
+    fetchStories();
+  }, [toast]);
 
   const scrollToStories = () => {
     requestAnimationFrame(() => {
@@ -35,17 +57,15 @@ const Index = () => {
       }
     });
   };
-
   const generateStory = async (settings: StorySettings) => {
     setIsGenerating(true);
     const tempId = Date.now().toString();
     const loadingStory: StoredStory = {
       id: tempId,
       title: `Generating podcast about ${settings.context.slice(0, 30)}...`,
-      content: "Generating your podcast...",
-      audioUrl: null,
-      settings: settings,
+      content: "Generating your podcast...", 
       createdAt: new Date(),
+      audioDuration: 0
     };
 
     setGeneratingStoryId(tempId);
@@ -56,18 +76,28 @@ const Index = () => {
     scrollToStories();
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await fetch("http://0.0.0.0:8000/generate-story", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          context: settings.context
+        }),
+      });
 
-      const mockStory = `A deep dive into ${settings.context}, narrated with our ${settings.voice} voice...`;
-      const mockAudioUrl = "https://example.com/audio.mp3";
+      if (!response.ok) {
+        throw new Error("Failed to generate story");
+      }
+
+      const storyData = await response.json();
 
       const finalStory: StoredStory = {
-        id: tempId,
-        title: settings.context,
-        content: mockStory,
-        audioUrl: mockAudioUrl,
-        settings: settings,
-        createdAt: loadingStory.createdAt,
+        id: storyData.id.toString(),
+        title: storyData.name,
+        content: storyData.text,
+        createdAt: new Date(storyData.created_at),
+        audioDuration: storyData.duration_seconds
       };
 
       const newStories = [finalStory, ...stories.filter(story => story.id !== tempId)];
@@ -80,6 +110,7 @@ const Index = () => {
         description: "Your podcast has been created!",
       });
     } catch (error) {
+      console.error("Error generating story:", error);
       toast({
         title: "Error",
         description: "Failed to generate podcast. Please try again.",
@@ -102,7 +133,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <header className="text-center mb-12 animate-fade-in">
             <h1 className="text-4xl font-bold text-[#403E43] mb-4">
-              Deep Research Podcast Creator
+              Deep Research Podcast
             </h1>
             <p className="text-lg text-gray-600">
               Create in-depth, well-researched podcast episodes on any topic

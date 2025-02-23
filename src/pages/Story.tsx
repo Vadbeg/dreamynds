@@ -35,7 +35,6 @@ const Story = () => {
       if (storiesSection) {
         storiesSection.scrollTo({
           top: window.innerHeight,
-          behavior: 'smooth'
         });
       }
     });
@@ -64,7 +63,7 @@ const Story = () => {
         </Button>
         <StoryDisplay
           story={story.content}
-          audioUrl={story.audioUrl}
+          id={parseInt(id || "0")}
           onReset={handleBack}
         />
       </div>

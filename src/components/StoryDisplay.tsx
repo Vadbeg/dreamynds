@@ -14,11 +14,11 @@ interface Story {
 
 interface StoryDisplayProps {
   story: string;
-  audioUrl: string | null;
+  id: number;
   onReset: () => void;
 }
 
-const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
+const StoryDisplay = ({ story, id, onReset }: StoryDisplayProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -29,7 +29,7 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
     const loadStoryAndAudio = async () => {
       try {
         // Load story data
-        const storyResponse = await fetch("http://0.0.0.0:8000/stories/1");
+        const storyResponse = await fetch(`http://0.0.0.0:8000/stories/${id}`);
         if (!storyResponse.ok) {
           throw new Error("Failed to fetch story");
         }
@@ -37,7 +37,7 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
         setStoryData(data);
 
         // Load audio separately
-        const audioResponse = await fetch(`http://0.0.0.0:8000/stories/1/audio`, {
+        const audioResponse = await fetch(`http://0.0.0.0:8000/stories/${id}/audio`, {
           headers: {
             "Accept": "audio/mpeg"
           }
@@ -151,7 +151,7 @@ const StoryDisplay = ({ story, audioUrl, onReset }: StoryDisplayProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-lg max-w-none h-[400px] overflow-y-auto">
           {storyData && storyData.text.split("\n").map((paragraph, index) => (
             <p key={index} className="mb-4 text-[#403E43] leading-relaxed">
               {paragraph}

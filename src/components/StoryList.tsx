@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, ChevronUp, Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -7,13 +6,8 @@ export interface StoredStory {
   id: string;
   title: string;
   content: string;
-  audioUrl: string | null;
-  settings: {
-    context: string;
-    voice: string;
-    length: string;
-  };
   createdAt: Date;
+  audioDuration: number;
 }
 
 interface StoryListProps {
@@ -23,11 +17,27 @@ interface StoryListProps {
 }
 
 const StoryList = ({ stories, onSelect, generatingStoryId }: StoryListProps) => {
+  const formatDuration = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+
+    const parts = [];
+    if (hours > 0) {
+      parts.push(hours.toString().padStart(2, "0"));
+    }
+    parts.push(minutes.toString().padStart(2, "0"));
+    parts.push(remainingSeconds.toString().padStart(2, "0"));
+
+    return parts.join(":");
+  };
+
   return (
     <div className="min-h-screen snap-start bg-gradient-to-br from-[#F1F0FB] via-[#D3E4FD] to-[#E5DEFF] p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-center mb-8">
-          <ChevronUp className="w-8 h-8 text-gray-400 animate-bounce" />
+        <div className="flex justify-center mb-12 pt-8 left-0 right-0 flex flex-col items-center gap-2 animate-bounce">
+          <ChevronUp className="w-6 h-6 text-gray-400" />
+          <p className="text-gray-500 text-sm">Scroll to see your episodes</p>
         </div>
         <div className="flex justify-center">
           <Card className="w-full max-w-[600px] bg-white/50 backdrop-blur-sm border-soft-blue/20">
@@ -43,7 +53,7 @@ const StoryList = ({ stories, onSelect, generatingStoryId }: StoryListProps) => 
                     No episodes created yet. Create your first episode!
                   </p>
                 ) : (
-                  stories.map((story) => (
+                  [...stories].sort((a, b) => parseInt(b.id) - parseInt(a.id)).map((story) => (
                     <div
                       key={story.id}
                       onClick={() => onSelect(story)}
@@ -61,11 +71,16 @@ const StoryList = ({ stories, onSelect, generatingStoryId }: StoryListProps) => 
                           <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>
-                          {formatDistanceToNow(story.createdAt, { addSuffix: true })}
-                        </span>
+                      <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>
+                            {formatDistanceToNow(story.createdAt, { addSuffix: true })}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span>{formatDuration(story.audioDuration)}</span>
+                        </div>
                       </div>
                     </div>
                   ))
